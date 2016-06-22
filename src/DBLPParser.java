@@ -37,8 +37,6 @@ public class DBLPParser {
 			InputStream xmlInput= new FileInputStream(args[0]);
 
 			SAXParser saxParser = factory.newSAXParser();
-			saxParser.getXMLReader().setFeature(
-                    "http://xml.org/sax/features/validation", true);
 			handler = new DBLPHandler();
 			
             saxParser.parse(xmlInput, handler);

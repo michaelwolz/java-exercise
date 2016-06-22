@@ -68,7 +68,7 @@ public class Magazine {
 	public void printTopAuthors() {
 		System.out.println("\n*** Top Autoren (Autor: #Artikel) ***");
 		this.authors.entrySet()
-			.stream()
+			.parallelStream()
 			.sorted((e1, e2) -> e1.getValue().compareTo(e2.getValue()))
 			.limit(20)
 			.forEach(
@@ -79,7 +79,7 @@ public class Magazine {
 	public void printTopWordCloud() {		
 		System.out.println("\n*** Wordcloud ***");		
 		this.wordlist.entrySet()
-			.stream()
+			.parallelStream()
 			.sorted((e1, e2) -> e1.getValue().compareTo(e2.getValue()))
 			.limit(20)
 			.forEach(
