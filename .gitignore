@@ -1,2 +1,7 @@
 *.xml
+*.dtd
 bin/
+.DS_Store
+.classpath
+.project
+.settings
