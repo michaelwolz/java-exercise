@@ -22,6 +22,11 @@ public class DBLPParser {
 
 	public static void main(String[] args)
 	{
+
+		/**
+			Einlesen der XML-Datei und initialisieren, sowie starten des SAX-Parsers
+		**/
+
 		System.setProperty("entityExpansionLimit", "2500000");
 		
 		DBLPHandler handler;

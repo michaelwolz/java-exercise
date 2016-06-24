@@ -9,7 +9,7 @@ class DBLPHandler extends DefaultHandler {
 	private String magazineTitle = null;
 	private boolean inTag = false;
 	private String data = "";
-	private Map<String, Magazine> magazineList = new HashMap<String, Magazine>();
+	private Map<String, Magazine> magazineList = new HashMap<String, Magazine>(); //Hashmap mit den Magazinnamen als Key und einem Magazine Objekt als Values
 	
 	@Override
 	public void startDocument() throws SAXException
@@ -22,6 +22,7 @@ class DBLPHandler extends DefaultHandler {
 	@Override
 	public void endDocument() throws SAXException
 	{
+		//Ausgeben des Gesamtergebnisses
 		this.magazineList.entrySet()
 			.stream()
 			.forEach(e -> 
@@ -62,13 +63,13 @@ class DBLPHandler extends DefaultHandler {
 	public void characters(char[] ch, int start, int length)
 	throws SAXException
 	{
-		if (this.inTag)
+		if (this.inTag) //Dies ist notwendig, da characters nicht garanitiert, dass eine Zeile auch als eine einzige eingelesen wird und es hier vorallem Probleme mit den HTML Entities gab
 			this.data += new String(ch, start, length);
 	}
 	
 	public void addOrUpdateMagazineList(String magazineTitle) {
-		Magazine tmp = this.magazineList.get(magazineTitle);
-		if (tmp == null) {
+		Magazine tmp = this.magazineList.get(magazineTitle); 
+		if (tmp == null) { //Wenn es das Magazin noch nicht gibt: lege es an. Sonst einfach den count erhöhen
 			this.magazineList.put(magazineTitle, new Magazine());
 		} else {
 			tmp.incrCount();

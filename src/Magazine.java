@@ -4,11 +4,11 @@ import java.util.Map;
 import java.util.TreeSet;
 
 public class Magazine {
-	private Map<String, KVObject> authors = new HashMap<String, KVObject>();
-	private Map<String, KVObject> wordlist = new HashMap<String, KVObject>();
-	private TreeSet<Integer> years = new TreeSet<Integer>();
+	private Map<String, KVObject> authors = new HashMap<String, KVObject>(); //Hash-Map für Autoren bestehend aus dem Titel als key und einem Key-Value Objekt.
+	private Map<String, KVObject> wordlist = new HashMap<String, KVObject>(); //Wie Autoren
+	private TreeSet<Integer> years = new TreeSet<Integer>(); //Tree-Set zum sortierten einfügen von Jahren
 
-	private int count = 1;
+	private int count = 1; 
 
 	public void incrCount() {
 		this.count++;
@@ -19,11 +19,11 @@ public class Magazine {
 		
 		for (String word: words) {
 			KVObject i;
-			word = word.trim();
-			word = word.replaceAll("[\\:\\=\\,\\;\\.]",""); //Remove unnecessary characters
+			word = word.trim(); //Leerzeichen entfernen (manchmal gab es zum Beispiel doppelte Leerzeichen und das "splitted" split nicht weg).
+			word = word.replaceAll("[\\:\\=\\,\\;\\.]",""); //Unnötige Zeichen entfernen
 			if (!word.isEmpty()) {
 				i = this.wordlist.get(word);
-				if (i != null) 
+				if (i != null) //Wenn es das Wort bereits gibt erhöhe den count, sonst füge das Wort als KVObject in die HashMap ein. 
 					i.add();
 				else
 					i = new KVObject(word); 
@@ -35,7 +35,7 @@ public class Magazine {
 	public void addOrUpdateAuthor(String name) {
 		KVObject i = this.authors.get(name);
 
-		if (i != null) 
+		if (i != null) //Analog zu words
 			i.add();
 		else 
 			i = new KVObject(name); 
@@ -43,7 +43,7 @@ public class Magazine {
 	}
 
 	public void addYear(int year) {
-		if (!this.years.contains(year))
+		if (!this.years.contains(year)) //Doppelte einträge in der Years Liste vermeiden
 			this.years.add(year);
 	}
 
@@ -68,7 +68,7 @@ public class Magazine {
 	public void printTopAuthors() {
 		System.out.println("\n*** Top Autoren (Autor: #Artikel) ***");
 		this.authors.entrySet()
-			.parallelStream()
+			.stream()
 			.sorted((e1, e2) -> e1.getValue().compareTo(e2.getValue()))
 			.limit(20)
 			.forEach(
@@ -79,7 +79,7 @@ public class Magazine {
 	public void printTopWordCloud() {		
 		System.out.println("\n*** Wordcloud ***");		
 		this.wordlist.entrySet()
-			.parallelStream()
+			.stream()
 			.sorted((e1, e2) -> e1.getValue().compareTo(e2.getValue()))
 			.limit(20)
 			.forEach(
@@ -88,7 +88,7 @@ public class Magazine {
 	}
 
 	public void generateOutput(String name) {
-		if (this.count >= 500) {
+		if (this.count >= 500) { //Nur Magazine mit mehr als 100 Einträgen
 			System.out.println("#### Magazin: " + name  + " ####");
 			System.out.println("\n*** Veröffentlichte Artikel: " + this.count); 
 			this.printYearsInfo();

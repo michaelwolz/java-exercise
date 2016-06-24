@@ -1,3 +1,7 @@
+/*
+	Key-Value Objekt, welches sich dann später über compareTo vergleichen lässt und somit im Stream über die sorted() Funktion sortiert werden kann
+*/
+
 public class KVObject implements Comparable<KVObject> {		
 	private String name;
 	private int	   count;
