@@ -8,7 +8,7 @@ import org.xml.sax.helpers.DefaultHandler;
 class DBLPHandler extends DefaultHandler {
 	private String magazineTitle = null;
 	private boolean inTag = false;
-	private String data = "";
+	private StringBuilder data = new StringBuilder();
 	private Map<String, Magazine> magazineList = new HashMap<String, Magazine>(); //Hashmap mit den Magazinnamen als Key und einem Magazine Objekt als Values
 	
 	@Override
@@ -46,17 +46,15 @@ class DBLPHandler extends DefaultHandler {
 	public void endElement(String nsURI, String localName, String qName)
 	throws SAXException
 	{
-		if (qName.equals("article")) 
-			this.magazineTitle = null;
-		else if (qName.equals("title")) 
-			this.addArticleTitleToMagazine(this.magazineTitle, this.data);
-		else if (qName.equals("author")) 
-			this.addAuthor(this.magazineTitle, this.data);
-		else if (qName.equals("year")) 
-			this.addYear(this.magazineTitle, this.data);
-		
+        switch (qName) {
+            case "article": this.magazineTitle = null; break;
+            case "title": this.addArticleTitleToMagazine(this.magazineTitle, this.data.toString()); break;
+            case "author": this.addAuthor(this.magazineTitle, this.data.toString()); break;
+            case "year": this.addYear(this.magazineTitle, this.data.toString()); break;
+        }
+        		
 		this.inTag = false;
-		this.data = "";
+		this.data.setLength(0);
 	}
 
 	@Override
@@ -64,7 +62,7 @@ class DBLPHandler extends DefaultHandler {
 	throws SAXException
 	{
 		if (this.inTag) //Dies ist notwendig, da characters nicht garanitiert, dass eine Zeile auch als eine einzige eingelesen wird und es hier vorallem Probleme mit den HTML Entities gab
-			this.data += new String(ch, start, length);
+			this.data.append(ch, start, length);
 	}
 	
 	public void addOrUpdateMagazineList(String magazineTitle) {
